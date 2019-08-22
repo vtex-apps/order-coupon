@@ -26,8 +26,6 @@ export const OrderCouponProvider = compose(
         variables: {
           text: coupon,
         },
-      }).then(response => {
-        console.log(response)
       })
     })
   }
