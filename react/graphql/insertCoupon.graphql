@@ -1,0 +1,5 @@
+mutation insertCoupon($text: String) {
+  insertCoupon(text: $text) {
+    code
+  }
+}
