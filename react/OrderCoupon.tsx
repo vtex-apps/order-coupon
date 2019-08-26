@@ -8,7 +8,7 @@ interface Context {
   insertCoupon: (coupon: string) => PromiseLike<void>
   coupon: string
   isShowingPromoButton: boolean
-  errorMessage: string
+  errorKey: string
   changeCoupon: (coupon: string) => void
   handleCouponChange: (evt: any) => void
   resetCouponInput: () => void
@@ -24,7 +24,7 @@ interface OrderItemsProviderProps {
 }
 
 const NO_ERROR = ''
-const CODE_DOESNT_EXIST = `Code doesn't exist`
+const CODE_DOESNT_EXIST = `CodeDoesntExist`
 
 const OrderCouponContext = createContext<Context | undefined>(undefined)
 
@@ -34,7 +34,7 @@ export const OrderCouponProvider = compose(
   const { enqueue } = useOrderManager()
   const [coupon, setCoupon] = useState('')
   const [isShowingPromoButton, setIsShowingPromoButton] = useState(true)
-  const [errorMessage, setErrorMessage] = useState(NO_ERROR)
+  const [errorKey, setErrorKey] = useState(NO_ERROR)
 
   const changeCoupon = (coupon: string) => {
     setCoupon(coupon)
@@ -53,6 +53,7 @@ export const OrderCouponProvider = compose(
 
   const submitCoupon = (evt: any) => {
     evt.preventDefault()
+    setErrorKey(NO_ERROR)
     insertCoupon(coupon)
   }
 
@@ -69,13 +70,11 @@ export const OrderCouponProvider = compose(
         : ''
 
       if (newCoupon) {
+        setCoupon(newCoupon)
         setIsShowingPromoButton(true)
-        setErrorMessage(NO_ERROR)
       } else {
-        setErrorMessage(CODE_DOESNT_EXIST)
+        setErrorKey(CODE_DOESNT_EXIST)
       }
-
-      setCoupon(newCoupon)
     })
   }
 
@@ -90,7 +89,7 @@ export const OrderCouponProvider = compose(
         setIsShowingPromoButton: setIsShowingPromoButton,
         isShowingPromoButton: isShowingPromoButton,
         submitCoupon: submitCoupon,
-        errorMessage: errorMessage,
+        errorKey: errorKey,
       }}
     >
       {children}
