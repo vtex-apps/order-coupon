@@ -31,7 +31,8 @@ interface OrderItemsProviderProps {
   changeCoupon: (coupon: string) => void
 }
 
-const NO_ERROR = ''
+const couponKey = 'coupon'
+const noError = ''
 
 const OrderCouponContext = createContext<Context | undefined>(undefined)
 
@@ -42,7 +43,7 @@ export const OrderCouponProvider = compose(
   const { orderForm, setOrderForm } = useOrderForm()
   const [coupon, setCoupon] = useState(orderForm.marketingData.coupon || '')
   const [showPromoButton, setShowPromoButton] = useState(true)
-  const [errorKey, setErrorKey] = useState(NO_ERROR)
+  const [errorKey, setErrorKey] = useState(noError)
 
   const isQueueBusy = useRef(false)
   useEffect(() => {
@@ -58,10 +59,7 @@ export const OrderCouponProvider = compose(
     (coupon: string) => {
       const marketingData = { ...orderForm.marketingData, coupon }
 
-      setOrderForm({
-        ...orderForm,
-        marketingData: marketingData,
-      })
+      setOrderForm({ marketingData })
 
       setShowPromoButton(true)
 
@@ -77,7 +75,7 @@ export const OrderCouponProvider = compose(
         return newOrderForm
       }
 
-      enqueue(task)
+      enqueue(task, couponKey)
         .then((newOrderForm: OrderForm) => {
           if (!isQueueBusy.current) {
             setOrderForm(newOrderForm)
