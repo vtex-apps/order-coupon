@@ -1,11 +1,20 @@
-import React, { createContext, ReactNode, useContext, useState } from 'react'
+import React, {
+  createContext,
+  ReactNode,
+  useContext,
+  useState,
+  useCallback,
+  useRef,
+  useEffect,
+} from 'react'
 import { compose, graphql } from 'react-apollo'
 import { useOrderQueue } from 'vtex.order-manager/OrderQueue'
+import { useOrderForm } from 'vtex.order-manager/OrderForm'
 
 import InsertCoupon from './graphql/insertCoupon.graphql'
 
 interface Context {
-  insertCoupon: (coupon: string) => PromiseLike<void>
+  insertCoupon: (coupon: string) => void
   coupon: string
   isShowingPromoButton: boolean
   errorKey: string
@@ -19,20 +28,23 @@ interface Context {
 interface OrderItemsProviderProps {
   children: ReactNode
   InsertCoupon: any
+  CouponQuery: any
   coupon: string
   changeCoupon: (coupon: string) => void
 }
 
 const NO_ERROR = ''
-const CODE_DOESNT_EXIST = `CodeDoesntExist`
 
 const OrderCouponContext = createContext<Context | undefined>(undefined)
 
 export const OrderCouponProvider = compose(
   graphql(InsertCoupon, { name: 'InsertCoupon' })
 )(({ children, InsertCoupon }: OrderItemsProviderProps) => {
-  const { enqueue } = useOrderQueue()
-  const [coupon, setCoupon] = useState('')
+  const { enqueue, listen } = useOrderQueue()
+  const { orderForm, setOrderForm } = useOrderForm()
+  const [coupon, setCoupon] = useState(
+    orderForm.marketingData.coupon ? orderForm.marketingData.coupon : ''
+  )
   const [isShowingPromoButton, setIsShowingPromoButton] = useState(true)
   const [errorKey, setErrorKey] = useState(NO_ERROR)
 
@@ -48,6 +60,7 @@ export const OrderCouponProvider = compose(
 
   const resetCouponInput = () => {
     changeCoupon('')
+    insertCoupon('')
     setIsShowingPromoButton(false)
   }
 
@@ -57,26 +70,53 @@ export const OrderCouponProvider = compose(
     insertCoupon(coupon)
   }
 
-  const insertCoupon = (coupon: string) => {
-    return enqueue(async () => {
-      const mutationResult = await InsertCoupon({
-        variables: {
-          text: coupon,
-        },
+  const isQueueBusy = useRef(false)
+  useEffect(() => {
+    const unlisten = listen('Pending', () => (isQueueBusy.current = true))
+    return unlisten
+  })
+  useEffect(() => {
+    const unlisten = listen('Fulfilled', () => (isQueueBusy.current = false))
+    return unlisten
+  })
+
+  const insertCoupon = useCallback(
+    (coupon: string) => {
+      const marketingData = { ...orderForm.marketingData, coupon }
+
+      setOrderForm({
+        ...orderForm,
+        marketingData: marketingData,
       })
 
-      const newCoupon = mutationResult.data.insertCoupon.code
-        ? mutationResult.data.insertCoupon.code
-        : ''
+      setIsShowingPromoButton(true)
 
-      if (newCoupon) {
-        setCoupon(newCoupon)
-        setIsShowingPromoButton(true)
-      } else {
-        setErrorKey(CODE_DOESNT_EXIST)
+      const task = async () => {
+        const {
+          data: { insertCoupon: newOrderForm },
+        } = await InsertCoupon({
+          variables: {
+            text: coupon,
+          },
+        })
+
+        return newOrderForm
       }
-    })
-  }
+
+      enqueue(task)
+        .then((newOrderForm: OrderForm) => {
+          if (!isQueueBusy.current) {
+            setOrderForm(newOrderForm)
+          }
+        })
+        .catch((error: any) => {
+          if (!error || error.code !== 'TASK_CANCELLED') {
+            throw error
+          }
+        })
+    },
+    [InsertCoupon, enqueue, orderForm, setOrderForm]
+  )
 
   return (
     <OrderCouponContext.Provider
