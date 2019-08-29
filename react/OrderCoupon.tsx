@@ -14,14 +14,12 @@ import { useOrderForm } from 'vtex.order-manager/OrderForm'
 import InsertCoupon from './graphql/insertCoupon.graphql'
 
 interface Context {
-  insertCoupon: (coupon: string) => void
   coupon: string
-  isShowingPromoButton: boolean
+  showPromoButton: boolean
   errorKey: string
   changeCoupon: (coupon: string) => void
-  handleCouponChange: (evt: any) => void
   resetCouponInput: () => void
-  setIsShowingPromoButton: (value: boolean) => void
+  setShowPromoButton: (value: boolean) => void
   submitCoupon: (evt: any) => void
 }
 
@@ -45,23 +43,17 @@ export const OrderCouponProvider = compose(
   const [coupon, setCoupon] = useState(
     orderForm.marketingData.coupon ? orderForm.marketingData.coupon : ''
   )
-  const [isShowingPromoButton, setIsShowingPromoButton] = useState(true)
+  const [showPromoButton, setShowPromoButton] = useState(true)
   const [errorKey, setErrorKey] = useState(NO_ERROR)
 
   const changeCoupon = (coupon: string) => {
     setCoupon(coupon)
   }
 
-  const handleCouponChange = (evt: any) => {
-    evt.preventDefault()
-    const newCoupon = evt.target.value.trim()
-    changeCoupon(newCoupon)
-  }
-
   const resetCouponInput = () => {
     changeCoupon('')
     insertCoupon('')
-    setIsShowingPromoButton(false)
+    setShowPromoButton(false)
   }
 
   const submitCoupon = (evt: any) => {
@@ -89,7 +81,7 @@ export const OrderCouponProvider = compose(
         marketingData: marketingData,
       })
 
-      setIsShowingPromoButton(true)
+      setShowPromoButton(true)
 
       const task = async () => {
         const {
@@ -121,13 +113,11 @@ export const OrderCouponProvider = compose(
   return (
     <OrderCouponContext.Provider
       value={{
-        insertCoupon: insertCoupon,
         coupon: coupon,
         changeCoupon: changeCoupon,
-        handleCouponChange: handleCouponChange,
         resetCouponInput: resetCouponInput,
-        setIsShowingPromoButton: setIsShowingPromoButton,
-        isShowingPromoButton: isShowingPromoButton,
+        setShowPromoButton: setShowPromoButton,
+        showPromoButton: showPromoButton,
         submitCoupon: submitCoupon,
         errorKey: errorKey,
       }}
