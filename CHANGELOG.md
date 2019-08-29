@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Changed
 
-- Move handleCouponChange to UI component
+- Move handleCouponChange, resetCouponInput and submitCoupon to UI component
 - Rename flag isShowingPromoButton to showPromoButton
 
 ## [0.2.1] - 2019-08-27

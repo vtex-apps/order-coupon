@@ -15,12 +15,12 @@ import InsertCoupon from './graphql/insertCoupon.graphql'
 
 interface Context {
   coupon: string
-  showPromoButton: boolean
+  setCoupon: (coupon: string) => void
+  insertCoupon: (coupon: string) => void
   errorKey: string
-  changeCoupon: (coupon: string) => void
-  resetCouponInput: () => void
+  setErrorKey: (errorKey: string) => void
+  showPromoButton: boolean
   setShowPromoButton: (value: boolean) => void
-  submitCoupon: (evt: any) => void
 }
 
 interface OrderItemsProviderProps {
@@ -45,22 +45,6 @@ export const OrderCouponProvider = compose(
   )
   const [showPromoButton, setShowPromoButton] = useState(true)
   const [errorKey, setErrorKey] = useState(NO_ERROR)
-
-  const changeCoupon = (coupon: string) => {
-    setCoupon(coupon)
-  }
-
-  const resetCouponInput = () => {
-    changeCoupon('')
-    insertCoupon('')
-    setShowPromoButton(false)
-  }
-
-  const submitCoupon = (evt: any) => {
-    evt.preventDefault()
-    setErrorKey(NO_ERROR)
-    insertCoupon(coupon)
-  }
 
   const isQueueBusy = useRef(false)
   useEffect(() => {
@@ -114,12 +98,12 @@ export const OrderCouponProvider = compose(
     <OrderCouponContext.Provider
       value={{
         coupon: coupon,
-        changeCoupon: changeCoupon,
-        resetCouponInput: resetCouponInput,
-        setShowPromoButton: setShowPromoButton,
+        setCoupon: setCoupon,
+        insertCoupon: insertCoupon,
         showPromoButton: showPromoButton,
-        submitCoupon: submitCoupon,
+        setShowPromoButton: setShowPromoButton,
         errorKey: errorKey,
+        setErrorKey: setErrorKey,
       }}
     >
       {children}
