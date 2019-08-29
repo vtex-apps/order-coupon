@@ -40,9 +40,7 @@ export const OrderCouponProvider = compose(
 )(({ children, InsertCoupon }: OrderItemsProviderProps) => {
   const { enqueue, listen } = useOrderQueue()
   const { orderForm, setOrderForm } = useOrderForm()
-  const [coupon, setCoupon] = useState(
-    orderForm.marketingData.coupon ? orderForm.marketingData.coupon : ''
-  )
+  const [coupon, setCoupon] = useState(orderForm.marketingData.coupon || '')
   const [showPromoButton, setShowPromoButton] = useState(true)
   const [errorKey, setErrorKey] = useState(NO_ERROR)
 
