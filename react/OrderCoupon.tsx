@@ -1,6 +1,6 @@
 import React, { createContext, ReactNode, useContext, useState } from 'react'
 import { compose, graphql } from 'react-apollo'
-import { useOrderManager } from 'vtex.order-manager/OrderManager'
+import { useOrderQueue } from 'vtex.order-manager/OrderQueue'
 
 import InsertCoupon from './graphql/insertCoupon.graphql'
 
@@ -31,7 +31,7 @@ const OrderCouponContext = createContext<Context | undefined>(undefined)
 export const OrderCouponProvider = compose(
   graphql(InsertCoupon, { name: 'InsertCoupon' })
 )(({ children, InsertCoupon }: OrderItemsProviderProps) => {
-  const { enqueue } = useOrderManager()
+  const { enqueue } = useOrderQueue()
   const [coupon, setCoupon] = useState('')
   const [isShowingPromoButton, setIsShowingPromoButton] = useState(true)
   const [errorKey, setErrorKey] = useState(NO_ERROR)
