@@ -11,7 +11,7 @@ import { compose, graphql } from 'react-apollo'
 import { useOrderQueue } from 'vtex.order-manager/OrderQueue'
 import { useOrderForm } from 'vtex.order-manager/OrderForm'
 
-import InsertCoupon from './graphql/insertCoupon.graphql'
+import { insertCoupon as InsertCoupon } from 'vtex.checkout-resources/Mutations'
 
 interface Context {
   coupon: string
