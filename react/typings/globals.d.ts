@@ -27,6 +27,7 @@ interface ItemAdditionalInfo {
 
 interface MarketingData {
   coupon: string
+  message: Message
 }
 
 interface SKUSpecification {
@@ -38,4 +39,8 @@ interface Totalizer {
   id: string
   name: string
   value: number
+}
+
+interface Message {
+  code: string
 }
