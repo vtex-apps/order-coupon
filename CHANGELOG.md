@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## Changed
+
+- Error key now is taken from marketingData message code
+
 ## [0.3.1] - 2019-09-05
 
 ## Changed
