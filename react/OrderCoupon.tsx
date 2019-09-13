@@ -57,12 +57,6 @@ export const OrderCouponProvider = compose(
 
   const insertCoupon = useCallback(
     (coupon: string) => {
-      const marketingData = { ...orderForm.marketingData, coupon }
-
-      setOrderForm({ marketingData })
-
-      setShowPromoButton(true)
-
       const task = async () => {
         const {
           data: { insertCoupon: newOrderForm },
@@ -77,6 +71,13 @@ export const OrderCouponProvider = compose(
 
       enqueue(task, couponKey)
         .then((newOrderForm: OrderForm) => {
+          if (newOrderForm.messages.couponMessages.length) {
+            const couponMessage = newOrderForm.messages.couponMessages.pop()
+            setErrorKey((couponMessage && couponMessage.code) || '')
+          }
+          if (newOrderForm.marketingData && newOrderForm.marketingData.coupon) {
+            setShowPromoButton(true)
+          }
           if (!isQueueBusy.current) {
             setOrderForm(newOrderForm)
           }
@@ -87,7 +88,7 @@ export const OrderCouponProvider = compose(
           }
         })
     },
-    [InsertCoupon, enqueue, orderForm, setOrderForm]
+    [InsertCoupon, enqueue, setOrderForm]
   )
 
   return (

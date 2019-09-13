@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## Changed
+
+- Get error code from `messages` field on `OrderForm`
+
 ## [0.3.1] - 2019-09-05
 
 ## Changed

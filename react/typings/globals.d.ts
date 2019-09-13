@@ -3,6 +3,7 @@ interface OrderForm {
   marketingData: MarketingData | null
   totalizers: Totalizer[]
   value: number
+  messages: OrderFormMessages
 }
 
 interface Item {
@@ -38,4 +39,14 @@ interface Totalizer {
   id: string
   name: string
   value: number
+}
+
+interface OrderFormMessages {
+  couponMessages: Message[]
+}
+
+interface Message {
+  code: string
+  status: string
+  text: string
 }
