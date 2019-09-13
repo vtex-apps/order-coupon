@@ -71,8 +71,11 @@ export const OrderCouponProvider = compose(
 
       enqueue(task, couponKey)
         .then((newOrderForm: OrderForm) => {
-          setErrorKey(newOrderForm.marketingData!.message.code)
-          if (newOrderForm.marketingData!.coupon) {
+          if (newOrderForm.messages.couponMessages.length) {
+            const couponMessage = newOrderForm.messages.couponMessages.pop()
+            setErrorKey((couponMessage && couponMessage.code) || '')
+          }
+          if (newOrderForm.marketingData && newOrderForm.marketingData.coupon) {
             setShowPromoButton(true)
           }
           if (!isQueueBusy.current) {

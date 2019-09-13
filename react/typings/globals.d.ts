@@ -3,6 +3,7 @@ interface OrderForm {
   marketingData: MarketingData | null
   totalizers: Totalizer[]
   value: number
+  messages: OrderFormMessages
 }
 
 interface Item {
@@ -27,7 +28,6 @@ interface ItemAdditionalInfo {
 
 interface MarketingData {
   coupon: string
-  message: Message
 }
 
 interface SKUSpecification {
@@ -41,6 +41,12 @@ interface Totalizer {
   value: number
 }
 
+interface OrderFormMessages {
+  couponMessages: Message[]
+}
+
 interface Message {
   code: string
+  status: string
+  text: string
 }
