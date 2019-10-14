@@ -1,7 +1,7 @@
 {
   "vendor": "vtex",
   "name": "order-coupon",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "title": "Order Coupon",
   "description": "Order coupon",
   "defaultLocale": "pt-BR",
