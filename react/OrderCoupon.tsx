@@ -4,11 +4,13 @@ import React, {
   useContext,
   useState,
   useCallback,
-  useRef,
-  useEffect,
 } from 'react'
 import { compose, graphql } from 'react-apollo'
-import { useOrderQueue } from 'vtex.order-manager/OrderQueue'
+import {
+  QueueStatus,
+  useOrderQueue,
+  useQueueStatus,
+} from 'vtex.order-manager/OrderQueue'
 import { useOrderForm } from 'vtex.order-manager/OrderForm'
 
 import { insertCoupon as InsertCoupon } from 'vtex.checkout-resources/Mutations'
@@ -27,6 +29,7 @@ interface OrderCouponProviderProps {
 
 const couponKey = 'coupon'
 const noError = ''
+const TASK_CANCELLED = 'TASK_CANCELLED'
 
 const OrderCouponContext = createContext<Context | undefined>(undefined)
 
@@ -38,15 +41,7 @@ export const OrderCouponProvider = compose(
   const [couponErrorKey, setCouponErrorKey] = useState(noError)
   const coupon = orderForm.marketingData.coupon || ''
 
-  const isQueueBusy = useRef(false)
-  useEffect(() => {
-    const unlisten = listen('Pending', () => (isQueueBusy.current = true))
-    return unlisten
-  })
-  useEffect(() => {
-    const unlisten = listen('Fulfilled', () => (isQueueBusy.current = false))
-    return unlisten
-  })
+  const queueStatusRef = useQueueStatus(listen)
 
   const insertCoupon = useCallback(
     async (coupon: string) => {
@@ -69,7 +64,7 @@ export const OrderCouponProvider = compose(
           const couponMessage = newOrderForm.messages.couponMessages.pop()
           setCouponErrorKey((couponMessage && couponMessage.code) || '')
         }
-        if (!isQueueBusy.current) {
+        if (queueStatusRef.current === QueueStatus.FULFILLED) {
           setOrderForm(newOrderForm)
         }
 
@@ -77,13 +72,13 @@ export const OrderCouponProvider = compose(
           newOrderForm.marketingData && newOrderForm.marketingData.coupon
         )
       } catch (error) {
-        if (!error || error.code !== 'TASK_CANCELLED') {
+        if (!error || error.code !== TASK_CANCELLED) {
           throw error
         }
         return false
       }
     },
-    [InsertCoupon, enqueue, setOrderForm]
+    [InsertCoupon, enqueue, queueStatusRef, setOrderForm]
   )
 
   return (
