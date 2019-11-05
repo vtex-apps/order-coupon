@@ -15,7 +15,7 @@ import { insertCoupon as InsertCoupon } from 'vtex.checkout-resources/Mutations'
 
 interface Context {
   coupon: string
-  insertCoupon: (coupon: string) => void
+  insertCoupon: (coupon: string) => Promise<boolean>
   couponErrorKey: string
   setCouponErrorKey: (errorKey: string) => void
 }
