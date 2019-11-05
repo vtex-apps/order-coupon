@@ -15,20 +15,14 @@ import { insertCoupon as InsertCoupon } from 'vtex.checkout-resources/Mutations'
 
 interface Context {
   coupon: string
-  setCoupon: (coupon: string) => void
   insertCoupon: (coupon: string) => void
-  errorKey: string
-  setErrorKey: (errorKey: string) => void
-  showPromoButton: boolean
-  setShowPromoButton: (value: boolean) => void
+  couponErrorKey: string
+  setCouponErrorKey: (errorKey: string) => void
 }
 
-interface OrderItemsProviderProps {
+interface OrderCouponProviderProps {
   children: ReactNode
   InsertCoupon: any
-  CouponQuery: any
-  coupon: string
-  changeCoupon: (coupon: string) => void
 }
 
 const couponKey = 'coupon'
@@ -38,12 +32,11 @@ const OrderCouponContext = createContext<Context | undefined>(undefined)
 
 export const OrderCouponProvider = compose(
   graphql(InsertCoupon, { name: 'InsertCoupon' })
-)(({ children, InsertCoupon }: OrderItemsProviderProps) => {
+)(({ children, InsertCoupon }: OrderCouponProviderProps) => {
   const { enqueue, listen } = useOrderQueue()
   const { orderForm, setOrderForm } = useOrderForm()
-  const [coupon, setCoupon] = useState(orderForm.marketingData.coupon || '')
-  const [showPromoButton, setShowPromoButton] = useState(true)
-  const [errorKey, setErrorKey] = useState(noError)
+  const [couponErrorKey, setCouponErrorKey] = useState(noError)
+  const coupon = orderForm.marketingData.coupon || ''
 
   const isQueueBusy = useRef(false)
   useEffect(() => {
@@ -56,7 +49,7 @@ export const OrderCouponProvider = compose(
   })
 
   const insertCoupon = useCallback(
-    (coupon: string) => {
+    async (coupon: string) => {
       const task = async () => {
         const {
           data: { insertCoupon: newOrderForm },
@@ -69,24 +62,26 @@ export const OrderCouponProvider = compose(
         return newOrderForm
       }
 
-      enqueue(task, couponKey)
-        .then((newOrderForm: OrderForm) => {
-          if (newOrderForm.messages.couponMessages.length) {
-            const couponMessage = newOrderForm.messages.couponMessages.pop()
-            setErrorKey((couponMessage && couponMessage.code) || '')
-          }
-          if (newOrderForm.marketingData && newOrderForm.marketingData.coupon) {
-            setShowPromoButton(true)
-          }
-          if (!isQueueBusy.current) {
-            setOrderForm(newOrderForm)
-          }
-        })
-        .catch((error: any) => {
-          if (!error || error.code !== 'TASK_CANCELLED') {
-            throw error
-          }
-        })
+      try {
+        const newOrderForm = await enqueue(task, couponKey)
+
+        if (newOrderForm.messages.couponMessages.length) {
+          const couponMessage = newOrderForm.messages.couponMessages.pop()
+          setCouponErrorKey((couponMessage && couponMessage.code) || '')
+        }
+        if (!isQueueBusy.current) {
+          setOrderForm(newOrderForm)
+        }
+
+        return !!(
+          newOrderForm.marketingData && newOrderForm.marketingData.coupon
+        )
+      } catch (error) {
+        if (!error || error.code !== 'TASK_CANCELLED') {
+          throw error
+        }
+        return false
+      }
     },
     [InsertCoupon, enqueue, setOrderForm]
   )
@@ -94,13 +89,10 @@ export const OrderCouponProvider = compose(
   return (
     <OrderCouponContext.Provider
       value={{
-        coupon: coupon,
-        setCoupon: setCoupon,
-        insertCoupon: insertCoupon,
-        showPromoButton: showPromoButton,
-        setShowPromoButton: setShowPromoButton,
-        errorKey: errorKey,
-        setErrorKey: setErrorKey,
+        coupon,
+        insertCoupon,
+        couponErrorKey,
+        setCouponErrorKey,
       }}
     >
       {children}
