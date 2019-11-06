@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Removed
 
-- `showPromoButton`, `setShowPromoButton`, `setCoupon` from the data provided by `OrderCouponProvider`.
+- `showPromoButton`, `setShowPromoButton`, `setCoupon` and `setCouponErrorKey` from the data provided by `OrderCouponProvider`.
 
 ## [0.5.0] - 2019-10-14
 

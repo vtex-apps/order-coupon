@@ -2,8 +2,8 @@ import React, {
   createContext,
   ReactNode,
   useContext,
-  useState,
   useCallback,
+  useState,
 } from 'react'
 import { compose, graphql } from 'react-apollo'
 import {
@@ -19,7 +19,6 @@ interface Context {
   coupon: string
   insertCoupon: (coupon: string) => Promise<boolean>
   couponErrorKey: string
-  setCouponErrorKey: (errorKey: string) => void
 }
 
 interface OrderCouponProviderProps {
@@ -38,8 +37,8 @@ export const OrderCouponProvider = compose(
 )(({ children, InsertCoupon }: OrderCouponProviderProps) => {
   const { enqueue, listen } = useOrderQueue()
   const { orderForm, setOrderForm } = useOrderForm()
-  const [couponErrorKey, setCouponErrorKey] = useState(noError)
   const coupon = orderForm.marketingData.coupon || ''
+  var [couponErrorKey, setCouponErrorKey] = useState(noError)
 
   const queueStatusRef = useQueueStatus(listen)
 
@@ -87,7 +86,6 @@ export const OrderCouponProvider = compose(
         coupon,
         insertCoupon,
         couponErrorKey,
-        setCouponErrorKey,
       }}
     >
       {children}
