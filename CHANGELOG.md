@@ -7,17 +7,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.6.0] - 2019-11-08
+
+### Removed
+
+- `showPromoButton`, `setShowPromoButton`, `setCoupon` and `setCouponErrorKey` from the data provided by `OrderCouponProvider`.
+
 ## [0.5.0] - 2019-10-14
 
 ## [0.4.0] - 2019-09-13
 
-## Changed
+### Changed
 
 - Get error code from `messages` field on `OrderForm`
 
 ## [0.3.1] - 2019-09-05
 
-## Changed
+### Changed
 
 - Get insertCoupon Mutation from checkout-resources
 
@@ -25,11 +31,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [0.2.2] - 2019-08-29
 
-## Added
+### Added
 
 - Use OrderQueue and OrderForm
 
-## Changed
+### Changed
 
 - Move handleCouponChange, resetCouponInput and submitCoupon to UI component
 - Rename flag isShowingPromoButton to showPromoButton
@@ -38,14 +44,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [0.2.0] - 2019-08-26
 
-## Added
+### Added
 
 - Add coupon component's logic
 - Error's logic
 
 ## [0.1.0] - 2019-08-26
 
-## Added
+### Added
 
 - Initial config
 - InsertCoupon query
