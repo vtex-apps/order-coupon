@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  ReactNode,
-  useContext,
-  useCallback,
-  useState,
-} from 'react'
+import React, { createContext, ReactNode, useContext, useCallback } from 'react'
 import { compose, graphql } from 'react-apollo'
 import {
   QueueStatus,
@@ -15,10 +9,14 @@ import { useOrderForm } from 'vtex.order-manager/OrderForm'
 
 import { insertCoupon as InsertCoupon } from 'vtex.checkout-resources/Mutations'
 
+interface InsertCouponResult {
+  success: boolean
+  errorKey: string
+}
+
 interface Context {
   coupon: string
-  insertCoupon: (coupon: string) => Promise<boolean>
-  couponErrorKey: string
+  insertCoupon: (coupon: string) => Promise<InsertCouponResult>
 }
 
 interface OrderCouponProviderProps {
@@ -27,7 +25,6 @@ interface OrderCouponProviderProps {
 }
 
 const couponKey = 'coupon'
-const noError = ''
 const TASK_CANCELLED = 'TASK_CANCELLED'
 
 const OrderCouponContext = createContext<Context | undefined>(undefined)
@@ -38,7 +35,6 @@ export const OrderCouponProvider = compose(
   const { enqueue, listen } = useOrderQueue()
   const { orderForm, setOrderForm } = useOrderForm()
   const coupon = orderForm.marketingData.coupon || ''
-  var [couponErrorKey, setCouponErrorKey] = useState(noError)
 
   const queueStatusRef = useQueueStatus(listen)
 
@@ -58,23 +54,28 @@ export const OrderCouponProvider = compose(
 
       try {
         const newOrderForm = await enqueue(task, couponKey)
+        let errorKey = ''
 
-        if (newOrderForm.messages.couponMessages.length) {
-          const couponMessage = newOrderForm.messages.couponMessages.pop()
-          setCouponErrorKey((couponMessage && couponMessage.code) || '')
-        }
         if (queueStatusRef.current === QueueStatus.FULFILLED) {
           setOrderForm(newOrderForm)
         }
 
-        return !!(
-          newOrderForm.marketingData && newOrderForm.marketingData.coupon
-        )
+        if (newOrderForm.messages.couponMessages.length) {
+          const [couponMessage] = newOrderForm.messages.couponMessages
+          errorKey = couponMessage.code
+        }
+
+        return {
+          success: !!(
+            newOrderForm.marketingData && newOrderForm.marketingData.coupon
+          ),
+          errorKey: errorKey,
+        }
       } catch (error) {
         if (!error || error.code !== TASK_CANCELLED) {
           throw error
         }
-        return false
+        return { success: false, errorKey: '' }
       }
     },
     [InsertCoupon, enqueue, queueStatusRef, setOrderForm]
@@ -85,7 +86,6 @@ export const OrderCouponProvider = compose(
       value={{
         coupon,
         insertCoupon,
-        couponErrorKey,
       }}
     >
       {children}
