@@ -69,7 +69,7 @@ export const OrderCouponProvider = compose(
           success: !!(
             newOrderForm.marketingData && newOrderForm.marketingData.coupon
           ),
-          errorKey: errorKey,
+          errorKey,
         }
       } catch (error) {
         if (!error || error.code !== TASK_CANCELLED) {
