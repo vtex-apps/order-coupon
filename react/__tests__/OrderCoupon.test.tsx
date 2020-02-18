@@ -6,7 +6,6 @@ import { OrderFormProvider, useOrderForm } from 'vtex.order-manager/OrderForm'
 import { OrderQueueProvider } from 'vtex.order-manager/OrderQueue'
 import { OrderCouponProvider, useOrderCoupon } from '../OrderCoupon'
 import { mockOrderForm } from '../__mocks__/mockOrderForm'
-import { MockedProvider } from '@apollo/react-testing'
 
 const mockedMarketingData = {
   coupon: 'newCoupon',
