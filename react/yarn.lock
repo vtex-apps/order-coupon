@@ -5288,17 +5288,17 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-"vtex.checkout-resources@http://vtex.vteximg.com.br/_v/public/typings/v1/vtex.checkout-resources@0.15.0/public/@types/vtex.checkout-resources":
-  version "0.15.0"
-  resolved "http://vtex.vteximg.com.br/_v/public/typings/v1/vtex.checkout-resources@0.15.0/public/@types/vtex.checkout-resources#205790019874cd3fb76230c59453fd78e9f8c166"
+"vtex.checkout-resources@http://vtex.vteximg.com.br/_v/public/typings/v1/vtex.checkout-resources@0.18.0/public/@types/vtex.checkout-resources":
+  version "0.18.0"
+  resolved "http://vtex.vteximg.com.br/_v/public/typings/v1/vtex.checkout-resources@0.18.0/public/@types/vtex.checkout-resources#d0fc5740eb90378abbe5180afd4f1756ec379f38"
 
-"vtex.order-manager@http://vtex.vteximg.com.br/_v/public/typings/v1/vtex.order-manager@0.6.9/public/@types/vtex.order-manager":
-  version "0.6.9"
-  resolved "http://vtex.vteximg.com.br/_v/public/typings/v1/vtex.order-manager@0.6.9/public/@types/vtex.order-manager#1347d65b9e85e20240dfe1230cf0728e2a729e02"
+"vtex.order-manager@http://vtex.vteximg.com.br/_v/public/typings/v1/vtex.order-manager@0.7.1/public/@types/vtex.order-manager":
+  version "0.7.1"
+  resolved "http://vtex.vteximg.com.br/_v/public/typings/v1/vtex.order-manager@0.7.1/public/@types/vtex.order-manager#c46f287a72dedd678a4c7afc0103f9805c1c4cce"
 
-"vtex.render-runtime@http://vtex.vteximg.com.br/_v/public/typings/v1/vtex.render-runtime@8.89.0/public/@types/vtex.render-runtime":
-  version "8.89.0"
-  resolved "http://vtex.vteximg.com.br/_v/public/typings/v1/vtex.render-runtime@8.89.0/public/@types/vtex.render-runtime#52ba790ad82c60a33e43951a85172db5d11a394d"
+"vtex.render-runtime@http://vtex.vteximg.com.br/_v/public/typings/v1/vtex.render-runtime@8.91.2/public/@types/vtex.render-runtime":
+  version "8.91.2"
+  resolved "http://vtex.vteximg.com.br/_v/public/typings/v1/vtex.render-runtime@8.91.2/public/@types/vtex.render-runtime#7f357b1dbe153d0fa08c554caabb5535695b5cda"
 
 w3c-hr-time@^1.0.1:
   version "1.0.1"

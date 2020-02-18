@@ -28,9 +28,9 @@
     "prettier": "^1.18.2",
     "tslint-eslint-rules": "^5.4.0",
     "typescript": "3.7.3",
-    "vtex.checkout-resources": "http://vtex.vteximg.com.br/_v/public/typings/v1/vtex.checkout-resources@0.15.0/public/@types/vtex.checkout-resources",
-    "vtex.render-runtime": "http://vtex.vteximg.com.br/_v/public/typings/v1/vtex.render-runtime@8.89.0/public/@types/vtex.render-runtime",
-    "vtex.order-manager": "http://vtex.vteximg.com.br/_v/public/typings/v1/vtex.order-manager@0.6.9/public/@types/vtex.order-manager"
+    "vtex.render-runtime": "http://vtex.vteximg.com.br/_v/public/typings/v1/vtex.render-runtime@8.91.2/public/@types/vtex.render-runtime",
+    "vtex.checkout-resources": "http://vtex.vteximg.com.br/_v/public/typings/v1/vtex.checkout-resources@0.18.0/public/@types/vtex.checkout-resources",
+    "vtex.order-manager": "http://vtex.vteximg.com.br/_v/public/typings/v1/vtex.order-manager@0.7.1/public/@types/vtex.order-manager"
   },
   "version": "0.7.1"
 }
