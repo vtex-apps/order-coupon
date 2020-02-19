@@ -7,7 +7,7 @@ import {
 } from 'vtex.order-manager/OrderQueue'
 import { useOrderForm } from 'vtex.order-manager/OrderForm'
 
-import { insertCoupon as InsertCoupon } from 'vtex.checkout-resources/Mutations'
+import InsertCoupon from 'vtex.checkout-resources/MutationInsertCoupon'
 
 interface InsertCouponResult {
   success: boolean
