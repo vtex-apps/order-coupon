@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react'
 import { act, fireEvent, render } from '@vtex/test-tools/react'
 
-import { insertCoupon as InsertCoupon } from 'vtex.checkout-resources/Mutations'
+import InsertCoupon from 'vtex.checkout-resources/MutationInsertCoupon'
 import { OrderFormProvider, useOrderForm } from 'vtex.order-manager/OrderForm'
 import { OrderQueueProvider } from 'vtex.order-manager/OrderQueue'
 import { OrderCouponProvider, useOrderCoupon } from '../OrderCoupon'

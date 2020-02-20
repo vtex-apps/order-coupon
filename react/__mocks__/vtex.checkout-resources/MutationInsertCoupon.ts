@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 
-export const insertCoupon = gql`
+export default gql`
   mutation MockMutation($text: String) {
     insertCoupon(text: $text) {
       marketingData {
