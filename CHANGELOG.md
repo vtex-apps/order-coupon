@@ -8,9 +8,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 
 ### Added
+
 - Tests to `insertCoupon` function.
 
 ### Removed
+
 - `coupon` info in order to concentrate all the `orderForm` related data in `OrderManager`.
 
 ## [0.7.1] - 2020-02-19
