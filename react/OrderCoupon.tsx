@@ -15,7 +15,6 @@ interface InsertCouponResult {
 }
 
 interface Context {
-  coupon: string
   insertCoupon: (coupon: string) => Promise<InsertCouponResult>
 }
 
@@ -33,8 +32,7 @@ export const OrderCouponProvider = compose(
   graphql(InsertCoupon, { name: 'InsertCoupon' })
 )(({ children, InsertCoupon }: OrderCouponProviderProps) => {
   const { enqueue, listen } = useOrderQueue()
-  const { orderForm, setOrderForm } = useOrderForm()
-  const coupon = orderForm.marketingData.coupon || ''
+  const { setOrderForm } = useOrderForm()
 
   const queueStatusRef = useQueueStatus(listen)
 
@@ -55,7 +53,6 @@ export const OrderCouponProvider = compose(
       try {
         const newOrderForm = await enqueue(task, couponKey)
         let errorKey = ''
-
         if (queueStatusRef.current === QueueStatus.FULFILLED) {
           setOrderForm(newOrderForm)
         }
@@ -84,7 +81,6 @@ export const OrderCouponProvider = compose(
   return (
     <OrderCouponContext.Provider
       value={{
-        coupon,
         insertCoupon,
       }}
     >
