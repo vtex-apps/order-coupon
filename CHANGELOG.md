@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Chore
+
+- Dump version to update published code with main.
+
 ### Added
 
 - Tests to `insertCoupon` function.
