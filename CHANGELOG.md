@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.7.2] - 2023-09-12
+
 ### Chore
 
 - Dump version to update published code with main.
